@@ -31,8 +31,8 @@ app.use(express.json())
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://websage.vercel.app',
-    'https://websage-frontend.vercel.app'
+    'https://websage30.vercel.app',
+    'https://websage-vanshsehgal08s-projects.vercel.app'
   ],
   credentials: true
 }))
