@@ -111,22 +111,5 @@ WebSage features a unique design system with:
 - "Design a blog platform with user authentication and comment system"
 - "Make a dashboard for a SaaS application with charts and analytics"
 
-## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- Built with ❤️ by [Vansh](https://yourportfolio.com)
-- Inspired by modern design trends and AI-powered development tools
-- Special thanks to the open-source community
-
----
-
-**Ready to build your dream website?** 🚀
-
-[Get Started Now](http://localhost:5173) | [View Demo](https://websage-demo.vercel.app) | [Documentation](https://docs.websage.dev)
