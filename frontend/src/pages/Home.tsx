@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Wand2 } from 'lucide-react';
+import { Sparkles, Code, Zap, Rocket, ArrowRight, Play, Layers, Palette } from 'lucide-react';
 import axios from "axios";
 import { BACKEND_URL } from '../config';
 
 export function Home() {
   const [prompt, setPrompt] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -15,53 +16,169 @@ export function Home() {
       }
   };
 
-  return (
-      <div className="min-h-screen bg-gradient-to-br from-black to-gray-900 flex flex-col items-center justify-between p-4 transition-all">
-          <div className="max-w-2xl w-full">
-              <div className="text-center mb-8">
-                  <div className="flex justify-center mb-4">
-                      <Wand2 className="w-16 h-16 text-gradient-to-r from-blue-400 to-purple-600 animate-pulse" />
-                  </div>
-                  <h1 className="text-5xl font-extrabold text-white mb-4">
-                      Buildify
-                  </h1>
-                  <p className="text-xl text-gray-300">
-                      Describe your dream website, and we'll help you build it
-                      step by step.
-                  </p>
-              </div>
+  const features = [
+    {
+      icon: <Code className="w-6 h-6" />,
+      title: "AI-Powered Generation",
+      description: "Advanced AI that understands your vision and creates stunning websites"
+    },
+    {
+      icon: <Layers className="w-6 h-6" />,
+      title: "Full-Stack Ready",
+      description: "Complete frontend and backend code generation in one platform"
+    },
+    {
+      icon: <Palette className="w-6 h-6" />,
+      title: "Modern Design",
+      description: "Beautiful, responsive designs that work on all devices"
+    },
+    {
+      icon: <Zap className="w-6 h-6" />,
+      title: "Instant Preview",
+      description: "See your website come to life in real-time as you build"
+    }
+  ];
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="bg-gray-800 rounded-3xl shadow-2xl p-8 transition-all hover:shadow-xl">
-                      <textarea
-                          value={prompt}
-                          onChange={(e) => setPrompt(e.target.value)}
-                          placeholder="Describe the website you want to build..."
-                          className="w-full h-40 p-4 bg-gray-900 text-white border-2 border-transparent rounded-xl focus:ring-4 focus:ring-blue-500 focus:border-transparent resize-none placeholder-gray-500 transition-all"
-                      />
-                      <button
-                          type="submit"
-                          className="w-full mt-6 bg-gradient-to-r from-green-500 to-blue-600 text-white py-3 px-6 rounded-xl font-medium hover:bg-gradient-to-l hover:from-green-600 hover:to-blue-500 transition-all"
-                      >
-                          Let's Build Your Dream Website
-                      </button>
+  return (
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '4s' }}></div>
+      </div>
+
+      {/* Main Content */}
+      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-4">
+        <div className="max-w-6xl w-full">
+          {/* Header Section */}
+          <div className="text-center mb-16">
+            <div className="flex justify-center mb-6">
+              <div className="relative">
+                <div className="w-20 h-20 glass rounded-2xl flex items-center justify-center glow">
+                  <Sparkles className="w-10 h-10 text-white" />
+                </div>
+                <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full animate-pulse-slow"></div>
+              </div>
+            </div>
+            
+            <h1 className="text-7xl font-black mb-6">
+              <span className="gradient-text">WebSage</span>
+            </h1>
+            
+            <p className="text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
+              Transform your ideas into stunning full-stack websites with the power of AI. 
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 font-semibold"> No coding required.</span>
+            </p>
+
+            {/* Feature Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 max-w-5xl mx-auto">
+              {features.map((feature, index) => (
+                <div 
+                  key={index}
+                  className="glass glass-hover rounded-xl p-6 text-center group"
+                >
+                  <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                    {feature.icon}
                   </div>
-              </form>
+                  <h3 className="text-lg font-semibold text-white mb-2">{feature.title}</h3>
+                  <p className="text-sm text-gray-400">{feature.description}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Footer */}
-          <footer className="w-full bg-gray-900 text-gray-400 text-center py-4 mt-auto">
-              <p className="text-sm">
-                  Made with ❤️ by{" "}
-                  <a
-                      href="https://yourportfolio.com"
-                      target="_blank"
-                      className="text-blue-400 hover:underline"
-                  >
-                      Vansh
-                  </a>
-              </p>
-          </footer>
+          {/* Main Input Section */}
+          <div className="max-w-4xl mx-auto">
+            <form onSubmit={handleSubmit} className="space-y-8">
+              <div className="glass glass-hover rounded-2xl p-8 glow-hover">
+                <div className="text-center mb-6">
+                  <h2 className="text-2xl font-bold text-white mb-2">Start Building Your Dream Website</h2>
+                  <p className="text-gray-400">Describe what you want to create, and let AI do the rest</p>
+                </div>
+                
+                <div className="relative">
+                  <textarea
+                    value={prompt}
+                    onChange={(e) => setPrompt(e.target.value)}
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
+                    placeholder="Describe your dream website... For example: 'A modern e-commerce site for handmade jewelry with a dark theme, shopping cart, and payment integration'"
+                    className={`w-full h-32 p-6 glass rounded-xl text-white placeholder-gray-500 resize-none transition-all duration-300 ${
+                      isFocused ? 'border-purple-500/50 glow' : 'border-transparent'
+                    } focus:outline-none focus:ring-2 focus:ring-purple-500/50`}
+                  />
+                  
+                  <div className="absolute bottom-4 right-4">
+                    <button
+                      type="submit"
+                      disabled={!prompt.trim()}
+                      className={`p-3 rounded-xl transition-all duration-300 ${
+                        prompt.trim() 
+                          ? 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transform hover:scale-105' 
+                          : 'bg-gray-600 cursor-not-allowed'
+                      }`}
+                    >
+                      <Rocket className="w-5 h-5 text-white" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="mt-6 flex items-center justify-center space-x-4 text-sm text-gray-400">
+                  <div className="flex items-center space-x-2">
+                    <Play className="w-4 h-4" />
+                    <span>Press Enter to start</span>
+                  </div>
+                  <div className="w-px h-4 bg-gray-600"></div>
+                  <div className="flex items-center space-x-2">
+                    <ArrowRight className="w-4 h-4" />
+                    <span>AI-powered generation</span>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          {/* Quick Examples */}
+          <div className="mt-16 text-center">
+            <h3 className="text-xl font-semibold text-white mb-6">Popular Examples</h3>
+            <div className="flex flex-wrap justify-center gap-4">
+              {[
+                "E-commerce store",
+                "Portfolio website", 
+                "Blog platform",
+                "Dashboard app",
+                "Landing page",
+                "Social network"
+              ].map((example, index) => (
+                <button
+                  key={index}
+                  onClick={() => setPrompt(`Create a ${example.toLowerCase()}`)}
+                  className="px-4 py-2 glass glass-hover rounded-full text-sm text-gray-300 hover:text-white transition-all"
+                >
+                  {example}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <footer className="w-full text-center py-8 mt-16">
+          <div className="glass rounded-xl p-6 max-w-md mx-auto">
+            <p className="text-gray-400 text-sm">
+              Made with <span className="text-pink-500">❤️</span> by{" "}
+              <a
+                href="https://yourportfolio.com"
+                target="_blank"
+                className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 hover:underline"
+              >
+                Vansh
+              </a>
+            </p>
+          </div>
+        </footer>
       </div>
+    </div>
   );
 }

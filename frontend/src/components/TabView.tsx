@@ -8,28 +8,28 @@ interface TabViewProps {
 
 export function TabView({ activeTab, onTabChange }: TabViewProps) {
   return (
-    <div className="flex space-x-2 mb-4">
+    <div className="flex space-x-2">
       <button
         onClick={() => onTabChange('code')}
-        className={`flex items-center gap-2 px-4 py-2 rounded-md transition-colors ${
+        className={`flex items-center gap-2 px-6 py-3 rounded-xl transition-all duration-300 ${
           activeTab === 'code'
-            ? 'bg-gray-700 text-gray-100'
-            : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800'
+            ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+            : 'glass glass-hover text-gray-400 hover:text-white'
         }`}
       >
         <Code2 className="w-4 h-4" />
-        Code
+        <span className="font-medium">Code Editor</span>
       </button>
       <button
         onClick={() => onTabChange('preview')}
-        className={`flex items-center gap-2 px-4 py-2 rounded-md transition-colors ${
+        className={`flex items-center gap-2 px-6 py-3 rounded-xl transition-all duration-300 ${
           activeTab === 'preview'
-            ? 'bg-gray-700 text-gray-100'
-            : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800'
+            ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg'
+            : 'glass glass-hover text-gray-400 hover:text-white'
         }`}
       >
         <Eye className="w-4 h-4" />
-        Preview
+        <span className="font-medium">Live Preview</span>
       </button>
     </div>
   );

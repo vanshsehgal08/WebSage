@@ -1,7 +1,55 @@
 import { MODIFICATIONS_TAG_NAME, WORK_DIR, allowedHTMLElements } from './constants';
 import { stripIndents } from "./stripIndents";
 
-export const BASE_PROMPT = "For all designs I ask you to make, have them be beautiful, not cookie cutter. Make webpages that are fully featured and worthy for production.\n\nBy default, this template supports JSX syntax with Tailwind CSS classes, React hooks, and Lucide React for icons. Do not install other packages for UI themes, icons, etc unless absolutely necessary or I request them.\n\nUse icons from lucide-react for logos.\n\nUse stock photos from unsplash where appropriate, only valid URLs you know exist. Do not download the images, only link to them in image tags.\n\n";
+export const BASE_PROMPT = `For all designs I ask you to make, create MODERN, PROFESSIONAL, and BEAUTIFUL websites that are worthy of production use. Follow these design principles:
+
+DESIGN REQUIREMENTS:
+- Use modern design patterns: clean layouts, proper whitespace, subtle shadows, and smooth transitions
+- Implement responsive design that works on all devices
+- Use sophisticated color palettes (avoid bright primary colors, prefer muted tones, gradients, and dark/light themes)
+- Apply professional typography with proper hierarchy (headings, subheadings, body text)
+- Include micro-interactions and hover effects for better UX
+- Use modern UI components: cards, modals, dropdowns, navigation bars, etc.
+- Implement proper spacing and padding (use Tailwind's spacing scale)
+- Add subtle animations and transitions for a polished feel
+- Use glassmorphism, subtle borders, and modern styling techniques
+- Create layouts that are visually balanced and follow design principles
+
+TECHNICAL REQUIREMENTS:
+- Use JSX syntax with Tailwind CSS classes for styling
+- Implement React hooks for state management and side effects
+- Use Lucide React for icons (prefer modern, minimal icons)
+- Structure code properly with components, hooks, and utilities
+- Add proper TypeScript types and interfaces
+- Use modern React patterns (functional components, hooks, etc.)
+
+CONTENT REQUIREMENTS:
+- Use stock photos from Unsplash for images (only valid URLs that exist)
+- Create meaningful, realistic content (not placeholder text)
+- Include proper meta tags and SEO elements
+- Add loading states and error handling
+- Implement proper accessibility features
+
+AVOID:
+- Basic, childish, or cookie-cutter designs
+- Bright, garish colors or overly simple layouts
+- Placeholder content like "Lorem ipsum" or "Hello World"
+- Single-page apps with just a title and button
+- Designs that look like student projects
+
+AIM FOR:
+- Designs that look like they belong on Dribbble or Behance
+- Professional SaaS landing pages, dashboards, or modern web apps
+- Sophisticated user interfaces with proper information architecture
+- Beautiful, functional, and modern web experiences
+
+By default, this template supports JSX syntax with Tailwind CSS classes, React hooks, and Lucide React for icons. Do not install other packages for UI themes, icons, etc unless absolutely necessary or I request them.
+
+Use icons from lucide-react for logos and UI elements.
+
+Use stock photos from unsplash where appropriate, only valid URLs you know exist. Do not download the images, only link to them in image tags.
+
+`;
 
 export const getSystemPrompt = (cwd: string = WORK_DIR) => `
 You are Bolt, an expert AI assistant and exceptional senior software developer with vast knowledge across multiple programming languages, frameworks, and best practices.
