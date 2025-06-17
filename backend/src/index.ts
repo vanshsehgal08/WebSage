@@ -28,7 +28,14 @@ interface GeminiResponse {
 
 const app = express();
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'https://websage.vercel.app',
+    'https://websage-frontend.vercel.app'
+  ],
+  credentials: true
+}))
 
 // Helper function to call Gemini API
 async function callGeminiAPI(prompt: string, systemPrompt?: string) {
