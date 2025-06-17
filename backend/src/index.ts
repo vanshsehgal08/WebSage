@@ -32,8 +32,7 @@ app.use(cors({
   origin: [
     'http://localhost:5173',
     'https://websage30.vercel.app',
-    'https://websage-vanshsehgal08s-projects.vercel.app',
-    'https://websage.vercel.app'
+    'https://websage-vanshsehgal08s-projects.vercel.app'
   ],
   credentials: true
 }))
@@ -135,12 +134,6 @@ app.post("/chat", async (req, res) => {
 if (process.env.NODE_ENV !== 'production') {
     app.listen(3000, () => {
         console.log('Server running on port 3000');
-    });
-} else {
-    // For Railway production
-    const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
     });
 }
 

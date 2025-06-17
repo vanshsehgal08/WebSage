@@ -1,1 +1,1 @@
-export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://websage-backend-production.up.railway.app"
+export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://websage-backend.vercel.app"
