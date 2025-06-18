@@ -12,7 +12,8 @@ import { parseXml } from '../steps';
 import { useWebContainer } from '../hooks/useWebContainer';
 import { FileNode } from '@webcontainer/api';
 import { Loader } from '../components/Loader';
-import { Sparkles, Send, ArrowLeft, Code, Eye, Bot, Zap } from 'lucide-react';
+import { Sparkles, Send, ArrowLeft, Code, Eye, Bot, Zap, LogOut } from 'lucide-react';
+import { supabase } from '../config';
 
 const MOCK_FILE_CONTENT = `// This is a sample file content
 import React from 'react';
@@ -191,6 +192,11 @@ export function Builder() {
     init();
   }, [])
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    window.location.reload();
+  };
+
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Animated Background */}
@@ -224,6 +230,14 @@ export function Builder() {
                 className="glass glass-hover rounded-xl p-2 text-gray-400 hover:text-white transition-all"
               >
                 <ArrowLeft className="w-5 h-5" />
+              </button>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 px-5 py-2 rounded-2xl glassmorphism shadow-lg text-white font-semibold text-base hover:bg-white/10 transition-all duration-200 border border-white/10 backdrop-blur-xl group"
+                style={{background: 'rgba(255,255,255,0.08)'}}
+              >
+                <LogOut className="w-5 h-5 text-pink-400 group-hover:text-purple-400 transition" />
+                <span className="gradient-text">Logout</span>
               </button>
             </div>
           </div>

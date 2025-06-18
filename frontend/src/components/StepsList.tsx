@@ -13,7 +13,7 @@ export function StepsList({ steps, currentStep, onStepClick }: StepsListProps) {
     <div className="space-y-3">
       {steps.map((step, index) => (
         <div
-          key={step.id}
+          key={`${step.id}-${index}`}
           className={`glass glass-hover rounded-xl p-4 cursor-pointer transition-all duration-300 ${
             currentStep === step.id
               ? 'border-purple-500/50 glow'
