@@ -26,16 +26,19 @@ function App() {
   }, []);
 
   if (loading) return <div>Loading...</div>;
-  if (!user) return <Auth onAuth={() => supabase.auth.getSession().then(({ data }) => setUser(data.session?.user ?? null))} />;
 
   return (
     <div className="relative min-h-screen">
       {/* Main App Content */}
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/builder" element={<Builder />} />
-        </Routes>
+        {!user ? (
+          <Auth onAuth={() => supabase.auth.getSession().then(({ data }) => setUser(data.session?.user ?? null))} />
+        ) : (
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/builder" element={<Builder />} />
+          </Routes>
+        )}
       </BrowserRouter>
       {/* Custom styles for glassmorphism and gradient text */}
       <style>{`
