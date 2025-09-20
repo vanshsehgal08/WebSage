@@ -29,14 +29,23 @@ import { Step, StepType } from './types';
  * The input can have strings in the middle they need to be ignored
  */
 export function parseXml(response: string): Step[] {
+    // First, try to extract content from markdown code blocks
+    let xmlContent = response;
+    
+    // Check if response is wrapped in markdown code blocks
+    const markdownMatch = response.match(/```(?:html|xml)?\s*([\s\S]*?)```/);
+    if (markdownMatch) {
+      xmlContent = markdownMatch[1];
+    }
+    
     // Extract the XML content between <boltArtifact> tags
-    const xmlMatch = response.match(/<boltArtifact[^>]*>([\s\S]*?)<\/boltArtifact>/);
+    const xmlMatch = xmlContent.match(/<boltArtifact[^>]*>([\s\S]*?)<\/boltArtifact>/);
     
     if (!xmlMatch) {
       return [];
     }
   
-    const xmlContent = xmlMatch[1];
+    const xmlContentInner = xmlMatch[1];
     const steps: Step[] = [];
     let stepId = 1;
   
@@ -57,7 +66,7 @@ export function parseXml(response: string): Step[] {
     const actionRegex = /<boltAction\s+type="([^"]*)"(?:\s+filePath="([^"]*)")?>([\s\S]*?)<\/boltAction>/g;
     
     let match;
-    while ((match = actionRegex.exec(xmlContent)) !== null) {
+    while ((match = actionRegex.exec(xmlContentInner)) !== null) {
       const [, type, filePath, content] = match;
   
       if (type === 'file') {

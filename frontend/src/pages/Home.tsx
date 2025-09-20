@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sparkles, Code, Zap, Rocket, ArrowRight, Play, Layers, Palette, LogOut } from 'lucide-react';
+import { Sparkles, Code, Zap, Rocket, ArrowRight, Play, Layers, Palette } from 'lucide-react';
 import axios from "axios";
-import { BACKEND_URL, supabase } from '../config';
+import { BACKEND_URL } from '../config';
 
 export function Home() {
   const [prompt, setPrompt] = useState("");
@@ -16,10 +16,6 @@ export function Home() {
       }
   };
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    window.location.reload();
-  };
 
   const features = [
     {
@@ -46,17 +42,6 @@ export function Home() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Top Bar: Logout Button */}
-      <div className="flex justify-end items-center px-8 py-6 z-50 relative">
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-2 px-5 py-2 rounded-2xl glassmorphism shadow-lg text-white font-semibold text-base hover:bg-white/10 transition-all duration-200 border border-white/10 backdrop-blur-xl group"
-          style={{background: 'rgba(255,255,255,0.08)'}}
-        >
-          <LogOut className="w-5 h-5 text-pink-400 group-hover:text-purple-400 transition" />
-          <span className="gradient-text">Logout</span>
-        </button>
-      </div>
 
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">

@@ -6,7 +6,7 @@ import {basePrompt as nodeBasePrompt} from "./defaults/node";
 import {basePrompt as reactBasePrompt} from "./defaults/react";
 import cors from "cors";
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "AIzaSyDKorxyD_uKZDdDRdohJPktVcr2JE8Izb8";
 const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
 
 // Type definitions for Gemini API response
@@ -29,20 +29,62 @@ interface GeminiResponse {
 const app = express();
 app.use(express.json())
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://websage30.vercel.app',
-    'https://websage-vanshsehgal08s-projects.vercel.app'
-  ],
-  credentials: true
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    const allowedOrigins = [
+      'http://localhost:5173',
+      'http://localhost:3000',
+      'https://websage30.vercel.app',
+      'https://websage-vanshsehgal08s-projects.vercel.app',
+      'https://websage-frontend.vercel.app'
+    ];
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  optionsSuccessStatus: 200
 }))
+
+// Handle preflight requests
+app.options('*', (req, res) => {
+    res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.sendStatus(200);
+});
+
+// Root route
+app.get("/", (req, res) => {
+    res.json({ 
+        message: "WebSage Backend API is running!",
+        timestamp: new Date().toISOString(),
+        cors: "enabled"
+    });
+})
+
+// Health check endpoint
+app.get("/health", (req, res) => {
+    res.json({ 
+        status: "healthy",
+        timestamp: new Date().toISOString()
+    });
+})
 
 // Helper function to call Gemini API
 async function callGeminiAPI(prompt: string, systemPrompt?: string) {
     try {
         const fullPrompt = systemPrompt ? `${systemPrompt}\n\n${prompt}` : prompt;
         
-        const response = await axios.post<GeminiResponse>(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+        const response = await axios.post<GeminiResponse>(GEMINI_API_URL, {
             contents: [
                 {
                     parts: [
@@ -60,7 +102,8 @@ async function callGeminiAPI(prompt: string, systemPrompt?: string) {
             }
         }, {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-goog-api-key': GEMINI_API_KEY
             }
         });
 
@@ -130,12 +173,11 @@ app.post("/chat", async (req, res) => {
     }
 })
 
-// For local development
-if (process.env.NODE_ENV !== 'production') {
-    app.listen(3000, () => {
-        console.log('Server running on port 3000');
-    });
-}
+// For local development and Render deployment
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
 
 // Export for Vercel
 export default app;

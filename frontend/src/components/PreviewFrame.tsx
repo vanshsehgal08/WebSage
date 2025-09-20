@@ -12,7 +12,11 @@ export function PreviewFrame({ files, webContainer }: PreviewFrameProps) {
   const [loading, setLoading] = useState(false);
 
   async function main() {
-    if (!webContainer) return;
+    if (!webContainer) {
+      console.log('PreviewFrame: WebContainer not available');
+      return;
+    }
+    console.log('PreviewFrame: Starting preview process');
     setLoading(true);
     try {
       const installProcess = await webContainer.spawn('npm', ['install']);
@@ -45,6 +49,7 @@ export function PreviewFrame({ files, webContainer }: PreviewFrameProps) {
       // Wait for `server-ready` event
       let serverReady = false;
       webContainer.on('server-ready', (port, url) => {
+        console.log('PreviewFrame: Server ready on port', port, 'URL:', url);
         serverReady = true;
         setUrl(url);
         setLoading(false);
