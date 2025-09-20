@@ -22,12 +22,23 @@ export function useWebContainer() {
             }
 
             try {
+                console.log('Booting WebContainer...');
+                console.log('Cross-Origin-Isolated:', window.crossOriginIsolated);
+                console.log('SharedArrayBuffer available:', typeof SharedArrayBuffer !== 'undefined');
+                
                 bootPromise = WebContainer.boot();
                 const instance = await bootPromise;
                 globalWebContainer = instance;
                 setWebcontainer(instance);
+                console.log('WebContainer booted successfully');
             } catch (error) {
                 console.error('Failed to boot WebContainer:', error);
+                console.error('Error details:', {
+                    name: error.name,
+                    message: error.message,
+                    crossOriginIsolated: window.crossOriginIsolated,
+                    sharedArrayBuffer: typeof SharedArrayBuffer !== 'undefined'
+                });
                 bootPromise = null;
             }
         }
