@@ -167,19 +167,13 @@ export function Home() {
 
         {/* Footer */}
         <footer className="w-full text-center py-8 mt-16">
-          <div className="glass rounded-xl p-6 max-w-md mx-auto">
-            <p className="text-gray-400 text-sm">
-              Made with <span className="text-pink-500">❤️</span> by{" "}
-              <a
-                href="https://yourportfolio.com"
-                target="_blank"
-                className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 hover:underline"
-              >
-                Vansh
-              </a>
-            </p>
-          </div>
-        </footer>
+  <div className="glass rounded-xl p-6 max-w-md mx-auto">
+    <p className="text-gray-400 text-sm">
+      Designed with care • Powered by creativity ✨
+    </p>
+  </div>
+</footer>
+
       </div>
     </div>
   );
