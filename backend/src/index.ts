@@ -39,7 +39,8 @@ app.use(cors({
       'http://localhost:3000',
       'https://websage30.vercel.app',
       'https://websage-vanshsehgal08s-projects.vercel.app',
-      'https://websage-frontend.vercel.app'
+      'https://websage-frontend.vercel.app',
+      'https://web-sage-sigma.vercel.app'
     ];
     
     if (allowedOrigins.indexOf(origin) !== -1) {
