@@ -18,6 +18,6 @@ function _stripIndents(value: string) {
     .split('\n')
     .map((line) => line.trim())
     .join('\n')
-    .trimStart()
+    .replace(/^\s+/, '')
     .replace(/[\r\n]$/, '');
 }

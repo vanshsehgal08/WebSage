@@ -1,5 +1,6 @@
-require("dotenv").config();
-import express from "express";
+import dotenv from "dotenv";
+dotenv.config();
+import express, { Request, Response } from "express";
 import axios from "axios";
 import { BASE_PROMPT, getSystemPrompt } from "./prompts";
 import {basePrompt as nodeBasePrompt} from "./defaults/node";
@@ -29,7 +30,7 @@ interface GeminiResponse {
 const app = express();
 app.use(express.json())
 app.use(cors({
-  origin: function (origin, callback) {
+  origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
     
@@ -54,7 +55,7 @@ app.use(cors({
 }))
 
 // Handle preflight requests
-app.options('*', (req, res) => {
+app.options('*', (req: Request, res: Response) => {
     res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
@@ -63,7 +64,7 @@ app.options('*', (req, res) => {
 });
 
 // Root route
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
     res.json({ 
         message: "WebSage Backend API is running!",
         timestamp: new Date().toISOString(),
@@ -72,7 +73,7 @@ app.get("/", (req, res) => {
 })
 
 // Health check endpoint
-app.get("/health", (req, res) => {
+app.get("/health", (req: Request, res: Response) => {
     res.json({ 
         status: "healthy",
         timestamp: new Date().toISOString()
@@ -116,7 +117,7 @@ async function callGeminiAPI(prompt: string, systemPrompt?: string) {
 
 //TEMPLATE ENDPOINT
 
-app.post("/template", async (req, res) => {
+app.post("/template", async (req: Request, res: Response) => {
     const prompt = req.body.prompt;
     
     try {
@@ -151,7 +152,7 @@ app.post("/template", async (req, res) => {
 
 // CHAT ENDPOINT
 
-app.post("/chat", async (req, res) => {
+app.post("/chat", async (req: Request, res: Response) => {
     const messages = req.body.messages;
     
     try {
