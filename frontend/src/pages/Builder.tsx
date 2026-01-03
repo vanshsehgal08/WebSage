@@ -12,7 +12,7 @@ import { parseXml } from '../steps';
 import { useWebContainer } from '../hooks/useWebContainer';
 import { FileNode } from '@webcontainer/api';
 import { Loader } from '../components/Loader';
-import { Sparkles, Send, ArrowLeft, Code, Eye, Bot, Zap } from 'lucide-react';
+import { Sparkles, Send, ArrowLeft, Code, Eye, Bot, Zap, Loader2 } from 'lucide-react';
 
 const MOCK_FILE_CONTENT = `// This is a sample file content
 import React from 'react';
@@ -196,6 +196,16 @@ export function Builder() {
     setLlmMessages(x => [...x, {role: "assistant", content: stepsResponse.data.response}])
   }
 
+  const messagesEndRef = React.useRef<null | HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [llmMessages]);
+
   useEffect(() => {
     init();
   }, [])
@@ -269,7 +279,39 @@ export function Builder() {
                     <h3 className="text-md font-semibold text-white">AI Assistant</h3>
                   </div>
                   
-                  {(loading || !templateSet) ? (
+                  <div className="flex-1 overflow-y-auto mb-4 custom-scrollbar max-h-[200px]">
+                      <div className="space-y-4">
+                        {llmMessages.map((msg, index) => {
+                          if (msg.role === "assistant") {
+                              return (
+                                <div key={index} className="flex justify-start">
+                                    <div className="max-w-[80%] p-3 rounded-xl text-sm bg-blue-500/20 text-blue-200">
+                                        {/* Summarize assistant response if it contains code/XML */}
+                                        {msg.content.includes('<boltArtifact') ? (
+                                            <span className="flex items-center gap-1 italic">
+                                                <Zap className="w-3 h-3" /> Website updated based on your request.
+                                            </span>
+                                        ) : (
+                                            msg.content
+                                        )}
+                                    </div>
+                                </div>
+                              );
+                          }
+
+                          return (
+                            <div key={index} className="flex justify-end">
+                              <div className="max-w-[80%] p-3 rounded-xl text-sm bg-purple-500/20 text-purple-200">
+                                {msg.content}
+                              </div>
+                            </div>
+                          );
+                        })}
+                        <div ref={messagesEndRef} />
+                      </div>
+                  </div>
+
+                  {(loading && !templateSet) ? (
                     <div className="glass rounded-xl p-4">
                       <Loader />
                     </div>
@@ -278,11 +320,13 @@ export function Builder() {
                       <textarea
                         value={userPrompt}
                         onChange={(e) => setPrompt(e.target.value)}
-                        className="w-full p-4 glass rounded-xl text-white placeholder-gray-400 resize-none focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                        className="w-full p-4 glass rounded-xl text-white placeholder-gray-400 resize-none focus:outline-none focus:ring-2 focus:ring-purple-500/50 disabled:opacity-50"
                         placeholder="Ask AI to modify your website..."
                         rows={3}
+                        disabled={loading}
                       />
                       <button
+                        disabled={loading}
                         onClick={async () => {
                           const newMessage = {
                             role: "user" as "user",
@@ -290,32 +334,41 @@ export function Builder() {
                           };
 
                           setLoading(true);
-                          const stepsResponse = await axios.post(`${BACKEND_URL}/chat`, {
-                            messages: [...llmMessages, newMessage],
-                          });
-                          setLoading(false);
-
+                          setPrompt(""); // Clear input immediately
+                          
                           setLlmMessages((x) => [...x, newMessage]);
-                          setLlmMessages((x) => [
-                            ...x,
-                            {
-                              role: "assistant",
-                              content: stepsResponse.data.response,
-                            },
-                          ]);
+                          
+                          try {
+                            const stepsResponse = await axios.post(`${BACKEND_URL}/chat`, {
+                                messages: [...llmMessages, newMessage],
+                            });
+                            
+                            setLlmMessages((x) => [
+                                ...x,
+                                {
+                                role: "assistant",
+                                content: stepsResponse.data.response,
+                                },
+                            ]);
 
-                          setSteps((s) => [
-                            ...s,
-                            ...parseXml(stepsResponse.data.response).map((x) => ({
-                              ...x,
-                              status: "pending" as "pending",
-                            })),
-                          ]);
+                            setSteps((s) => [
+                                ...s,
+                                ...parseXml(stepsResponse.data.response).map((x) => ({
+                                ...x,
+                                status: "pending" as "pending",
+                                })),
+                            ]);
+                          } catch (error) {
+                             console.error(error);
+                             // Revert or show error could go here
+                          } finally {
+                             setLoading(false);
+                          }
                         }}
-                        className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-4 rounded-xl font-medium hover:from-purple-600 hover:to-pink-600 transition-all flex items-center justify-center space-x-2"
+                        className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-4 rounded-xl font-medium hover:from-purple-600 hover:to-pink-600 transition-all flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        <Send className="w-4 h-4" />
-                        <span>Send to AI</span>
+                        {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                        <span>{loading ? "Thinking..." : "Send to AI"}</span>
                       </button>
                     </div>
                   )}
