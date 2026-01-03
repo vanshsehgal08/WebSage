@@ -7,8 +7,8 @@ import {basePrompt as nodeBasePrompt} from "./defaults/node";
 import {basePrompt as reactBasePrompt} from "./defaults/react";
 import cors from "cors";
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "AIzaSyDKorxyD_uKZDdDRdohJPktVcr2JE8Izb8";
-const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
 
 // Type definitions for Gemini API response
 interface GeminiPart {
